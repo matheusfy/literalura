@@ -1,0 +1,224 @@
+{
+  "results": [
+    {
+      "id": 55752,
+      "title": "Dom Casmurro",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 1111
+    },
+    {
+      "id": 54829,
+      "title": "Memorias Posthumas de Braz Cubas",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 643
+    },
+    {
+      "id": 55682,
+      "title": "Quincas Borba",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 339
+    },
+    {
+      "id": 61653,
+      "title": "Poesias Completas",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 197
+    },
+    {
+      "id": 21040,
+      "title": "Brazilian Tales",
+      "authors": [
+        {
+          "name": "Albuquerque, Medeiros e",
+          "birth_year": 1867,
+          "death_year": 1934
+        },
+        {
+          "name": "Coelho Netto, Henrique",
+          "birth_year": 1864,
+          "death_year": 1934
+        },
+        {
+          "name": "Dolores, Carmen",
+          "birth_year": 1852,
+          "death_year": 1910
+        },
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "en"
+      ],
+      "download_count": 192
+    },
+    {
+      "id": 53101,
+      "title": "A Mao e A Luva",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 172
+    },
+    {
+      "id": 33056,
+      "title": "Historias Sem Data",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 157
+    },
+    {
+      "id": 55797,
+      "title": "Memorial de Ayres",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 118
+    },
+    {
+      "id": 67162,
+      "title": "Helena",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 101
+    },
+    {
+      "id": 57001,
+      "title": "Papeis Avulsos",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 85
+    },
+    {
+      "id": 60847,
+      "title": "Mémoires Posthumes de Braz Cubas",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "fr"
+      ],
+      "download_count": 79
+    },
+    {
+      "id": 57360,
+      "title": "Machado de Assis, Son Oeuvre Littéraire",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        },
+        {
+          "name": "Lima, Oliveira",
+          "birth_year": 1867,
+          "death_year": 1928
+        },
+        {
+          "name": "Orban, Victor",
+          "birth_year": 1868,
+          "death_year": 1946
+        }
+      ],
+      "languages": [
+        "fr"
+      ],
+      "download_count": 54
+    },
+    {
+      "id": 56737,
+      "title": "Esau e Jacob",
+      "authors": [
+        {
+          "name": "Machado de Assis",
+          "birth_year": 1839,
+          "death_year": 1908
+        }
+      ],
+      "languages": [
+        "pt"
+      ],
+      "download_count": 52
+    }
+  ]
+}
