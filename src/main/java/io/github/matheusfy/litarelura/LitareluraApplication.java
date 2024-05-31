@@ -2,11 +2,14 @@ package io.github.matheusfy.litarelura;
 
 import io.github.matheusfy.litarelura.repository.AuthorRepository;
 import io.github.matheusfy.litarelura.repository.BookRepository;
+
+import java.nio.charset.Charset;
+import java.util.Scanner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 public class LitareluraApplication implements CommandLineRunner {
@@ -27,9 +30,5 @@ public class LitareluraApplication implements CommandLineRunner {
 		ApplicationMenu menu = new ApplicationMenu(bookRepository, authorRepository);
 		menu.exibeMenu();
 
-		// ***************** testes ***************
-		// service.jsonToBook();
-		// service.getSearch("machado+de+assis");
-		// service.getSearch("Dom+casmurro");
 	}
 }

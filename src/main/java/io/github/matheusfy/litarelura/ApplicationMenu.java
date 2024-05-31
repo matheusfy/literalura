@@ -46,10 +46,10 @@ public class ApplicationMenu {
                 0 - Sair...
                 """;
 
-//        97 - [TESTE] Atualiza id dos livros que estao vazios
-//        98 - [TESTE] salvar uma lista de livros e autores a partir de um Json local
-//        99 - [TESTE] faz a busca de um autor pelo nome.
-//        100 - [TESTE] atualiza banco a partir de um json local de livros
+        // 97 - [TESTE] Atualiza id dos livros que estao vazios
+        // 98 - [TESTE] salvar uma lista de livros e autores a partir de um Json local
+        // 99 - [TESTE] faz a busca de um autor pelo nome.
+        // 100 - [TESTE] atualiza banco a partir de um json local de livros
 
         while (!opcao.equals("0") && !opcao.equals("s")) {
             System.out.println(textMenu);
@@ -59,17 +59,17 @@ public class ApplicationMenu {
                 case "2" -> getAllBooks(); // feito
                 case "3" -> getBooksByLanguage(); // feito
                 case "4" -> getAllAuthors(); // feito
-                case "5" -> getAuthorsLivedIn(); //feito
-                case "6" -> getBookOnLanguage() ; // feito
+                case "5" -> getAuthorsLivedIn(); // feito
+                case "6" -> getBookOnLanguage(); // feito
                 case "7" -> getBooksByAuthors();
                 case "8" -> getTop10DownloadedBooks();
                 case "9" -> getBooksByAuthorFromApi();
 
-//                *************** Cases de teste ************** //
-//                case "97" -> updateBooks();
-//                case "98" -> testeSaving();
-//                case "99" -> tryGetAutor();
-//                case "100" -> updateBooksLocally();
+                // *************** Cases de teste ************** //
+                // case "97" -> updateBooks();
+                // case "98" -> testeSaving();
+                // case "99" -> tryGetAutor();
+                // case "100" -> updateBooksLocally();
 
                 case "0" -> System.out.println("Saindo ...");
             }
@@ -84,16 +84,20 @@ public class ApplicationMenu {
         System.out.println("Digite o nome do author que deseja buscar os livros na api. ");
         String author = cmd.nextLine().replace(" ", "+");
 
-        String resultJson = service.getSearch(author);
+        try {
+            String resultJson = service.getSearch(author);
+            List<BookDTO> booksDTOs = jsonConverterService.json2Books(resultJson);
 
-        List<BookDTO> booksDTOs = jsonConverterService.json2Books(resultJson);
-        if(!booksDTOs.isEmpty()){
-            List<Book> books = booksDTOs.stream().map(Book::new).toList();
-            books.forEach(System.out::println);
-            // se livro e author ainda não estão salvos no banco
-            trySaveBooks(books);
-        } else {
-            System.out.println("Não encontramos livros para o autor: " + author);
+            if (!booksDTOs.isEmpty()) {
+                List<Book> books = booksDTOs.stream().map(Book::new).toList();
+                books.forEach(System.out::println);
+                // se livro e author ainda não estão salvos no banco
+                trySaveBooks(books);
+            } else {
+                System.out.println("Não encontramos livros para o autor: " + author);
+            }
+        } catch (Exception error) {
+            System.out.println("[Exception] reason:" + error.getMessage());
         }
 
     }
@@ -101,13 +105,13 @@ public class ApplicationMenu {
     private void getBookOnLanguage() {
         System.out.println("Digite a sigla do idioma que gostaria de consultar: ");
         String language = cmd.nextLine();
-        Long bookQty  = bookRepository.countByLanguages(language);
-        System.out.println(bookQty + " Livros encontrado no idioma: " + language );
+        Long bookQty = bookRepository.countByLanguages(language);
+        System.out.println(bookQty + " Livros encontrado no idioma: " + language);
     }
 
     private void getAllAuthors() {
         List<Author> authors = authorRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-        if(!authors.isEmpty()){
+        if (!authors.isEmpty()) {
             System.out.println("Autores encontrados: ");
             authors.forEach(System.out::println);
         } else {
@@ -117,21 +121,22 @@ public class ApplicationMenu {
 
     private void getTop10DownloadedBooks() {
         List<Book> top10Books = bookRepository.findTop10ByDownloadCount();
-        if(!top10Books.isEmpty()){
-            top10Books.forEach(book -> System.out.println("Baixados: " + book.getDownloadCount() + " - Titulo: " + book.getTitle() + " - Autor: " + book.getAuthor().getName()));
+        if (!top10Books.isEmpty()) {
+            top10Books.forEach(book -> System.out.println("Baixados: " + book.getDownloadCount() + " - Titulo: "
+                    + book.getTitle() + " - Autor: " + book.getAuthor().getName()));
         }
     }
 
-//    private void tryGetAutor() {
-//        System.out.println("Digite um nome de autor:");
-//        String nome = cmd.nextLine();
-//        Optional<Author> author = authorRepository.findByName(nome);
-//        if (author.isPresent()) {
-//            System.out.println(author.get());
-//        } else {
-//            System.out.println("Autor nao encontrado");
-//        }
-//    }
+    // private void tryGetAutor() {
+    // System.out.println("Digite um nome de autor:");
+    // String nome = cmd.nextLine();
+    // Optional<Author> author = authorRepository.findByName(nome);
+    // if (author.isPresent()) {
+    // System.out.println(author.get());
+    // } else {
+    // System.out.println("Autor nao encontrado");
+    // }
+    // }
 
     private void getBooksFromApi() {
         System.out.println("Qual o nome do livro/autor que deseja buscar? ");
@@ -154,7 +159,7 @@ public class ApplicationMenu {
         String language = cmd.nextLine();
         List<Book> books = bookRepository.findByLanguage(language);
 
-        if(!books.isEmpty()){
+        if (!books.isEmpty()) {
             System.out.println("Livros encontrados: ");
             books.forEach(System.out::println);
         } else {
@@ -164,7 +169,7 @@ public class ApplicationMenu {
 
     private void getAuthorsLivedIn() {
         System.out.println("Escolha um intervalo de vida que o autor viveu. ");
-        try{
+        try {
             System.out.println("Inicio:");
             Long startYear = cmd.nextLong();
             cmd.nextLine();
@@ -176,11 +181,11 @@ public class ApplicationMenu {
                 List<Author> authors = authorRepository.findAuthorLivedIn(startYear, endYear);
                 if (!authors.isEmpty()) {
                     authors.forEach(System.out::println);
-               }
+                }
             } else {
                 System.out.println("Ano de inicio não pode ser maior que o ano final.");
             }
-        } catch (Exception error){
+        } catch (Exception error) {
             System.out.println(error.getMessage());
         }
     }
@@ -197,9 +202,9 @@ public class ApplicationMenu {
                 try {
                     Author author = chooseValidAuthorFromList(authors);
                     List<Book> books = bookRepository.findByAuthor(author);
-                    System.out.println("Livros do autor: " +author.getName());
+                    System.out.println("Livros do autor: " + author.getName());
                     books.forEach(System.out::println);
-                } catch (Exception error){
+                } catch (Exception error) {
                     System.out.println(error.getMessage());
                 }
             }
@@ -208,7 +213,7 @@ public class ApplicationMenu {
         }
     }
 
-    private Author chooseValidAuthorFromList(List<Author> authors){
+    private Author chooseValidAuthorFromList(List<Author> authors) {
         System.out.println("Foram encontrados diversos autores com este nome. O desejado é algum desta listas?");
         int i = 0;
 
@@ -224,7 +229,7 @@ public class ApplicationMenu {
         return authors.get(index - 1);
     }
 
-    private void printAuthorsBooks(Author author){
+    private void printAuthorsBooks(Author author) {
         System.out.println("Autor encontrado: " + author.getName());
         List<Book> books = bookRepository.findByAuthor(author);
         System.out.println("Obras encontradas: ");
@@ -236,64 +241,71 @@ public class ApplicationMenu {
         books.forEach(System.out::println);
     }
 
-//    private void testeSaving() {
-//        try {
-//            List<BookDTO> booksDTOs = readBooksFromJson();
-//            if (booksDTOs != null) {
-//                List<Book> books = booksDTOs.stream().map(Book::new).toList();
-//                trySaveBooks(books);
-//            }
-//        } catch (IOException e) {
-//            System.out.println("Deu pau na conversao");
-//        }
-//    }
+    // private void testeSaving() {
+    // try {
+    // List<BookDTO> booksDTOs = readBooksFromJson();
+    // if (booksDTOs != null) {
+    // List<Book> books = booksDTOs.stream().map(Book::new).toList();
+    // trySaveBooks(books);
+    // }
+    // } catch (IOException e) {
+    // System.out.println("Deu pau na conversao");
+    // }
+    // }
 
-//    private void updateBooks(){
-//
-//        List<Book> emptyLibIdBooks =  bookRepository.findByLibIdNull();
-//        for(Book emptyLibIdBook : emptyLibIdBooks){
-//            try{
-//                // Busca o livro na web pelo nome
-//                List<BookDTO> bookDTOS = jsonConverterService.json2Books(searchOnWeb(emptyLibIdBook.getTitle().replace(" ",  "+")));
-//
-//                if(bookDTOS.size() == 1){
-//                    System.out.println("Libid: " + bookDTOS.get(0).id() + " Nome: " + bookDTOS.get(0).title());
-//                    emptyLibIdBook.setLibId(bookDTOS.get(0).id());
-//                    bookRepository.save(emptyLibIdBook);
-//                } else {
-//                    System.out.println("encontrado mais de 1 livro com este nome: " + emptyLibIdBook.getTitle());
-//                    //TODO: ver como podemos filtrar pelo registro original
-//                }
-//            } catch (Exception error){
-//                System.out.println("[Exception] reason:" + error.getMessage());
-//            }
-//        }
-//    }
+    // private void updateBooks(){
+    //
+    // List<Book> emptyLibIdBooks = bookRepository.findByLibIdNull();
+    // for(Book emptyLibIdBook : emptyLibIdBooks){
+    // try{
+    // // Busca o livro na web pelo nome
+    // List<BookDTO> bookDTOS =
+    // jsonConverterService.json2Books(searchOnWeb(emptyLibIdBook.getTitle().replace("
+    // ", "+")));
+    //
+    // if(bookDTOS.size() == 1){
+    // System.out.println("Libid: " + bookDTOS.get(0).id() + " Nome: " +
+    // bookDTOS.get(0).title());
+    // emptyLibIdBook.setLibId(bookDTOS.get(0).id());
+    // bookRepository.save(emptyLibIdBook);
+    // } else {
+    // System.out.println("encontrado mais de 1 livro com este nome: " +
+    // emptyLibIdBook.getTitle());
+    // }
+    // } catch (Exception error){
+    // System.out.println("[Exception] reason:" + error.getMessage());
+    // }
+    // }
+    // }
 
-    // Funcao utilizado para teste = Carrega um json local e busca no banco o livro com aquele titulo se o livro nao tiver lib_id, setamos ele com o que temos no json
-//    private void updateBooksLocally(){
-//        List<BookDTO> bookDTOS = jsonConverterService.json2Books(searchOnWeb("Almeida"));
-//        for (BookDTO bookDTO : bookDTOS){
-//            Optional<Book> opBookFromDB = bookRepository.findByTitle(bookDTO.title());
-//            if(opBookFromDB.isPresent()){
-//                Book bookFromDB = opBookFromDB.get();
-//                if (bookFromDB.getLibId() == null)
-//                {
-//                    System.out.println("Id do livro " + bookFromDB.getTitle() + " é null. Setando ele com o valor novo de : " + bookDTO.id());
-//                    bookFromDB.setLibId(bookDTO.id());
-//                    System.out.println("O objeto do livro com o novo id: " + bookFromDB);
-//
-//                    bookRepository.save(bookFromDB);
-//                }
-//            }
-//        }
-//    }
+    // Funcao utilizado para teste = Carrega um json local e busca no banco o livro
+    // com aquele titulo se o livro nao tiver lib_id, setamos ele com o que temos no
+    // json
+    // private void updateBooksLocally(){
+    // List<BookDTO> bookDTOS =
+    // jsonConverterService.json2Books(searchOnWeb("Almeida"));
+    // for (BookDTO bookDTO : bookDTOS){
+    // Optional<Book> opBookFromDB = bookRepository.findByTitle(bookDTO.title());
+    // if(opBookFromDB.isPresent()){
+    // Book bookFromDB = opBookFromDB.get();
+    // if (bookFromDB.getLibId() == null)
+    // {
+    // System.out.println("Id do livro " + bookFromDB.getTitle() + " é null. Setando
+    // ele com o valor novo de : " + bookDTO.id());
+    // bookFromDB.setLibId(bookDTO.id());
+    // System.out.println("O objeto do livro com o novo id: " + bookFromDB);
+    //
+    // bookRepository.save(bookFromDB);
+    // }
+    // }
+    // }
+    // }
 
-//    private List<BookDTO> readBooksFromJson() throws IOException {
-//        JsonConverter jsonConverter = new JsonConverter();
-//        String json = new ObjectMapper().readTree(new File("book.json")).toString();
-//        return jsonConverter.json2Books(json);
-//    }
+    // private List<BookDTO> readBooksFromJson() throws IOException {
+    // JsonConverter jsonConverter = new JsonConverter();
+    // String json = new ObjectMapper().readTree(new File("book.json")).toString();
+    // return jsonConverter.json2Books(json);
+    // }
 
     private List<Book> booksDTO2Book(List<BookDTO> booksDTO) {
         return booksDTO.stream()
@@ -305,7 +317,7 @@ public class ApplicationMenu {
         return service.getSearch(bookName);
     }
 
-    private List<Book> convertBookJson2List(String responseJson){
+    private List<Book> convertBookJson2List(String responseJson) {
         List<BookDTO> booksDTO = jsonConverterService.json2Books(responseJson);
         return booksDTO2Book(booksDTO);
     }
