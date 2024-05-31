@@ -1,4 +1,4 @@
-![Thumbnail GitHub](https://user-images.githubusercontent.com/8989346/123303345-171fc980-d4f4-11eb-84ae-cb0e49bfb126.png)
+![Thumbnail project](./imgs/Literalura.png)
   
 # Literalura
 
@@ -6,7 +6,7 @@ Neste projeto desenvolvemos uma aplicação de um Catálogo de Livros que ofere�
 
 ## 🔨 Funcionalidades do projeto
 
-TODO: Adicionar funcionalidades	
+Para acessar informações sobre as funcionalidades, acesse -> [Functionalities](./functionalities/README.md)
 
 ## ✔️ Técnicas e tecnologias utilizadas
 
@@ -21,10 +21,6 @@ TODO: Adicionar funcionalidades
   - `Spring-start`
 
 
-<!-- - `Funcionalidade 1`: descrição da funcionalidade 1
-- `Funcionalidade 2`: descrição da funcionalidade 2
-  - `Funcionalidade 2a`: descrição da funcionalidade 2a relacionada à funcionalidade 2
-- `Funcionalidade 3`: descrição da funcionalidade 3 -->
 
 ## 🛠️ Abrir e rodar o projeto
 
