@@ -3,11 +3,11 @@ package io.github.matheusfy.litarelura.model.entity;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.matheusfy.litarelura.model.entity.dto.AuthorDTO;
+
+import io.github.matheusfy.litarelura.model.dto.AuthorDTO;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

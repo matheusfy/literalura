@@ -1,14 +1,23 @@
 package io.github.matheusfy.litarelura;
 
 import io.github.matheusfy.litarelura.connections.BooksApi;
+import io.github.matheusfy.litarelura.connections.exception.ConnectionTimeoutException;
 import io.github.matheusfy.litarelura.mapper.JsonConverter;
+import io.github.matheusfy.litarelura.mapper.exception.JsonMappingFailException;
+import io.github.matheusfy.litarelura.model.dto.BookDTO;
 import io.github.matheusfy.litarelura.model.entity.Author;
 import io.github.matheusfy.litarelura.model.entity.Book;
-import io.github.matheusfy.litarelura.model.entity.dto.BookDTO;
 import io.github.matheusfy.litarelura.repository.AuthorRepository;
 import io.github.matheusfy.litarelura.repository.BookRepository;
+
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -78,6 +87,7 @@ public class ApplicationMenu {
                 opcao = cmd.nextLine().toLowerCase();
             }
         }
+        cmd.close();
     }
 
     private void getBooksByAuthorFromApi() {
@@ -90,8 +100,9 @@ public class ApplicationMenu {
 
             if (!booksDTOs.isEmpty()) {
                 List<Book> books = booksDTOs.stream().map(Book::new).toList();
+
                 books.forEach(System.out::println);
-                // se livro e author ainda não estão salvos no banco
+
                 trySaveBooks(books);
             } else {
                 System.out.println("Não encontramos livros para o autor: " + author);
@@ -142,11 +153,23 @@ public class ApplicationMenu {
         System.out.println("Qual o nome do livro/autor que deseja buscar? ");
         String bookName = cmd.nextLine().replace(" ", "+");
 
-        List<Book> books = convertBookJson2List(searchOnWeb(bookName));
+        try {
+            List<Book> books = convertBookJson2List(searchOnWeb(bookName));
 
-        if (!books.isEmpty()) {
-            trySaveBooks(books);
+            if (!books.isEmpty()) {
+                trySaveBooks(books);
+            } else {
+                System.out.println("Nenhum livro encontrado com o nome: " + bookName);
+            }
+
+        } catch (JsonMappingFailException error) {
+            System.out.println(error.getMessage());
+        } catch (ConnectionTimeoutException timeout) {
+            System.out.println(timeout.getMessage());
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Erro nao mapeado: " + e.getMessage());
         }
+
     }
 
     private void getBooksByLanguage() {
@@ -181,6 +204,9 @@ public class ApplicationMenu {
                 List<Author> authors = authorRepository.findAuthorLivedIn(startYear, endYear);
                 if (!authors.isEmpty()) {
                     authors.forEach(System.out::println);
+                } else {
+                    System.out
+                            .println("Nenhum autor encontrado com o intervalo de vida: " + startYear + " - " + endYear);
                 }
             } else {
                 System.out.println("Ano de inicio não pode ser maior que o ano final.");
@@ -313,11 +339,11 @@ public class ApplicationMenu {
                 .collect(Collectors.toList());
     }
 
-    private String searchOnWeb(String bookName) {
+    private String searchOnWeb(String bookName) throws IOException, InterruptedException {
         return service.getSearch(bookName);
     }
 
-    private List<Book> convertBookJson2List(String responseJson) {
+    private List<Book> convertBookJson2List(String responseJson) throws JsonMappingFailException {
         List<BookDTO> booksDTO = jsonConverterService.json2Books(responseJson);
         return booksDTO2Book(booksDTO);
     }
@@ -336,8 +362,10 @@ public class ApplicationMenu {
                 System.out.println(book);
                 book.setAuthor(author);
                 authorRepository.save(author);
-            } catch (Exception e) {
-                System.out.println("[Exception]: " + e.getMessage());
+            } catch (DataIntegrityViolationException e) {
+                System.out.println("Erro ao salvar livro: " + book.getTitle() + " - " + "chave duplicada no banco.");
+            } catch (IllegalArgumentException argError) {
+                System.out.println("Argumento invalido foi passado: " + " - " + argError.getMessage());
             }
         }
     }

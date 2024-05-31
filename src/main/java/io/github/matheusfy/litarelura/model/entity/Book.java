@@ -2,7 +2,7 @@ package io.github.matheusfy.litarelura.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.matheusfy.litarelura.model.entity.dto.BookDTO;
+import io.github.matheusfy.litarelura.model.dto.BookDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -18,10 +18,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(unique = true, updatable = true)
     private Long libId;
-
 
     @Column(nullable = false, unique = true)
     @JsonProperty(value = "title")

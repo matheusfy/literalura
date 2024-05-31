@@ -1,4 +1,4 @@
-package io.github.matheusfy.litarelura.model.entity.dto;
+package io.github.matheusfy.litarelura.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -1,7 +1,7 @@
 package io.github.matheusfy.litarelura.repository;
 
 import io.github.matheusfy.litarelura.model.entity.Author;
-import io.github.matheusfy.litarelura.model.entity.dto.AuthorDTO;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
